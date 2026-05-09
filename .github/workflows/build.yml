@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  actions: read # For actions/upload-artifact
 
 jobs:
   build:
@@ -25,4 +26,10 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
 
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew linkReleaseExecutableHost
+
+      - name: Upload executable
+        uses: actions/upload-artifact@v4
+        with:
+          name: araisan-meme-server
+          path: build/bin/host/releaseExecutable/araisan-meme-server.kexe
