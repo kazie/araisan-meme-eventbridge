@@ -16,7 +16,8 @@ spotless {
 }
 
 tasks.named("spotlessCheck") {
-    dependsOn("spotlessApply")
+    // Removed automatic apply in CI to prevent confusion/side effects
+    // dependsOn("spotlessApply")
 }
 
 group = "se.araisan.meme"
