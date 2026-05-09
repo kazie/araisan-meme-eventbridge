@@ -1,6 +1,6 @@
 [versions]
-kotlin = "2.3.20"
-logback = "1.5.21"
+kotlin = "2.3.21"
+logback = "1.5.32"
 spotless = "8.4.0"
 
 [libraries]
