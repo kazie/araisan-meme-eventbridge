@@ -29,7 +29,7 @@ jobs:
         run: ./gradlew linkReleaseExecutableHost
 
       - name: Upload executable
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: araisan-meme-server
           path: build/bin/host/releaseExecutable/araisan-meme-server.kexe
