@@ -1,0 +1,15 @@
+[*]
+indent_size = 4
+insert_final_newline = true
+charset = utf-8
+trim_trailing_whitespace = true
+
+[*.{yml,yaml}]
+indent_size = 2
+
+[*.{kt,kts}]
+ktlint_standard_no-wildcard-imports = enabled
+ktlint_standard_filename = disabled
+ij_kotlin_name_count_to_use_star_import = 999
+ij_kotlin_name_count_to_use_star_import_for_members = 999
+ij_kotlin_packages_to_use_import_on_demand = unset
