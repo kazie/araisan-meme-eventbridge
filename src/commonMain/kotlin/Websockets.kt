@@ -13,8 +13,7 @@ import se.araisan.meme.WebsocketState.connections
 import se.araisan.meme.WebsocketState.connectionsMutex
 
 fun Application.configureWebsockets() {
-    install(WebSockets) {
-    }
+    install(WebSockets) {}
 }
 
 object WebsocketState {
@@ -25,27 +24,39 @@ object WebsocketState {
 fun handleWebSocketConnection(): suspend DefaultWebSocketServerSession.() -> Unit =
     {
         // websocketSession
-        connectionsMutex.withLock {
-            connections += this
-        }
+        registerConnection()
         try {
             for (frame in incoming) {
-                if (frame is Frame.Text) {
-                    val text = frame.readText()
-                    val currentConnections =
-                        connectionsMutex.withLock {
-                            connections.toList()
-                        }
-                    currentConnections.forEach {
-                        if (it != this) {
-                            it.send(text)
-                        }
+                if (frame !is Frame.Text) continue
+
+                val text = frame.readText()
+
+                currentConnections().filterNot { it == this }.forEach { recipient ->
+                    runCatching {
+                        recipient.send(text)
+                    }.onFailure {
+                        unregisterConnection(remove = recipient)
                     }
                 }
             }
         } finally {
-            connectionsMutex.withLock {
-                connections -= this
-            }
+            unregisterConnection()
         }
+    }
+
+private suspend fun DefaultWebSocketServerSession.registerConnection() {
+    connectionsMutex.withLock {
+        connections += this
+    }
+}
+
+private suspend fun DefaultWebSocketServerSession.unregisterConnection(remove: DefaultWebSocketServerSession = this) {
+    connectionsMutex.withLock {
+        connections -= remove
+    }
+}
+
+private suspend fun currentConnections(): List<DefaultWebSocketServerSession> =
+    connectionsMutex.withLock {
+        connections.toList()
     }
