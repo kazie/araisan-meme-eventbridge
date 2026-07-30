@@ -13,7 +13,7 @@ dependencyResolutionManagement {
         maven { url = uri("https://redirector.kotlinlang.org/maven/ktor-eap") }
     }
     versionCatalogs {
-        create("ktorLibs").from("io.ktor:ktor-version-catalog:3.4.3")
+        create("ktorLibs").from("io.ktor:ktor-version-catalog:3.5.0")
     }
 }
 
