@@ -7,8 +7,10 @@ fun main(args: Array<String>) {
     val port = args.find { it.startsWith("-port=") }?.substringAfter("=")?.toIntOrNull() ?: 8080
     val host = args.find { it.startsWith("-host=") }?.substringAfter("=") ?: "0.0.0.0"
 
+    val broker = TopicBroker()
+
     embeddedServer(CIO, port = port, host = host) {
         configureWebsockets()
-        configureRouting()
+        configureRouting(broker)
     }.start(wait = true)
 }
