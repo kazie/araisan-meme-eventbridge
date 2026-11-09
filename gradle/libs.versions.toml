@@ -1,7 +1,7 @@
 [versions]
-kotlin = "2.4.20"
-logback = "1.6.4"
-spotless = "8.10.2"
+kotlin = "2.4.21"
+logback = "1.6.6"
+spotless = "8.11.0"
 
 [libraries]
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
