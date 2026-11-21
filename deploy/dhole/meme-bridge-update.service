@@ -1,0 +1,13 @@
+# Builds origin/master and deploys it with nanoda when it's new (update.sh). Started by meme-bridge-update.timer.
+# Lives in the repo (deploy/dhole/); linked into ~/.config/systemd/user with `systemctl --user link`, so after a
+# change here: systemctl --user daemon-reload.
+
+[Unit]
+Description=Build and deploy meme-bridge from origin/master
+
+[Service]
+Type=oneshot
+Environment=PATH=%h/bin:/usr/local/bin:/usr/bin
+ExecStart=%h/apps/meme-bridge/src/deploy/dhole/update.sh
+Nice=10
+TimeoutStartSec=1h

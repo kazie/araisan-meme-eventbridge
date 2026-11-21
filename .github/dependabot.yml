@@ -13,6 +13,13 @@ updates:
           - "minor"
           - "patch"
 
+  # flake.lock inputs (nixpkgs: the JDK that `nix run .#build` uses).
+  - package-ecosystem: "nix"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:

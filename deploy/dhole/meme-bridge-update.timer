@@ -1,0 +1,14 @@
+# Runs meme-bridge-update.service nightly. A deploy restarts the bridge, which drops every open websocket,
+# so it happens at night rather than as soon as something is merged.
+# Lives in the repo (deploy/dhole/); linked into ~/.config/systemd/user.
+
+[Unit]
+Description=Build and deploy meme-bridge from origin/master, nightly
+
+[Timer]
+OnCalendar=*-*-* 03:30
+RandomizedDelaySec=30m
+Persistent=true
+
+[Install]
+WantedBy=timers.target
