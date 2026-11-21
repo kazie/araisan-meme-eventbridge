@@ -15,7 +15,30 @@ Any service can subscribe to topics and publish messages to them.
 
 ### Prerequisites
 
-- JDK 11 or higher.
+- JDK 25 (the current LTS) to run Gradle. [Nix](https://nixos.org) with flakes brings it (pinned in `flake.lock`),
+  or use your own. `gradle/gradle-daemon-jvm.properties` makes Gradle run on a JDK 25 it finds and fail without one.
+  The bridge itself is a native binary and needs no JVM.
+
+### Building with Nix
+
+CI and the server build the release binary the same way:
+
+```bash
+nix run .#build                                  # build/bin/host/releaseExecutable/araisan-meme-server.kexe
+nix run .#build -- linkReleaseExecutableHost hostTest   # any Gradle tasks
+nix develop                                      # a shell with the same JDK, for ./gradlew (or direnv: .envrc)
+```
+
+Nix pins only the toolchain. Gradle still resolves the dependencies from `gradle/libs.versions.toml`, so
+Dependabot's Gradle updates need nothing extra, and its `nix` updates bump `flake.lock`. Both merge by themselves
+once the `build` check passes (`.github/workflows/dependabot-automerge.yml`).
+
+### Deployment
+
+dhole runs the bridge as the nanoda app `meme-bridge`. Every night `meme-bridge-update.timer` runs
+`deploy/dhole/update.sh`, which fast-forwards dhole's checkout to `master`, builds it with `nix run .#build` when
+that commit isn't live yet, and deploys it with `nanoda deploy meme-bridge --id <commit>`. Back:
+`nanoda rollback meme-bridge`. See the comments in `deploy/dhole/` for details.
 
 ### Building the Project
 
